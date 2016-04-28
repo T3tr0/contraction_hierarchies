@@ -21,11 +21,11 @@ map<pair<float, float>, int> getRedPoint(list<Road> roads) {
       lastCoordinate.lat, lastCoordinate.lng), redPointsList.size()));
   }
 
-  map<pair<float, float>, int>::const_iterator it2 = redPointsList.begin();
-  for(; it2 != redPointsList.end(); ++it2) {
-    cout << it2->second << " || { "
-      << (it2->first).first << " , " << (it2->first).second << " }" <<endl;
-  }
+  // map<pair<float, float>, int>::const_iterator it2 = redPointsList.begin();
+  // for(; it2 != redPointsList.end(); ++it2) {
+    // cout << it2->second << " || { "
+      // << (it2->first).first << " , " << (it2->first).second << " }" <<endl;
+  // }
   cout << redPointsList.size() << endl;
   return redPointsList;
 }
@@ -44,7 +44,6 @@ int main(int argc, char *argv[]) {
     CsvParser parser = CsvParser(argv[1]);
     parser.Parse();
     getRedPoint(parser.roads);
-    cout << "Done" << endl;
   }
   else
     usage();
