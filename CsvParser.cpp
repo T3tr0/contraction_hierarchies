@@ -48,7 +48,7 @@ void CsvParser::Parse() {
       Road road = Road(v[0], t_priority(stoi(v[1])), stoi(v[2]), stoi(v[3]), stoi(v[4]), stoi(v[5]), points);
       roads.push_back(road);
 
-      cout << road << endl;
+      // cout << road << endl;
     }
 
   } else {

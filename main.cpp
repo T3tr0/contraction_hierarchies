@@ -1,7 +1,38 @@
 #include "CsvParser.hh"
 #include "Road.hh"
+#include <map>
+#include <list>
 
 // "/Users/ro22e0/Desktop/test.csv"
+
+map<int, t_coordinates> getRedPoint(list<Road> roads) {
+  map<int, t_coordinates> redPointsList;
+  list<Road>::iterator it = roads.begin();
+  int i = 0;
+
+  for(; it != roads.end(); ++it) {
+    list<t_coordinates> coordinates = (*it).coord_points;
+    t_coordinates firstCoordinate =
+              {coordinates.front().lat, coordinates.front().lng};
+    t_coordinates lastCoordinate =
+              {coordinates.back().lat, coordinates.back().lng};
+    redPointsList.insert(pair<int, t_coordinates>(i, firstCoordinate));
+    i++;
+    redPointsList.insert(pair<int, t_coordinates>(i, lastCoordinate));
+    i++;
+  }
+
+  map<int, t_coordinates>::const_iterator it2 = redPointsList.begin();
+  for(; it2 != redPointsList.end(); ++it2) {
+    cout << it2->first << " || { "
+      << (it2->second).lat << " , " << (it2->second).lng << " }" <<endl;
+  }
+  return redPointsList;
+}
+
+void getIntersection(list<Road> roads) {
+
+}
 
 void usage() {
   cerr << "No file provided.\n[Usage ./server file_path.csv]" << endl;
@@ -12,6 +43,8 @@ int main(int argc, char *argv[]) {
   {
     CsvParser parser = CsvParser(argv[1]);
     parser.Parse();
+    // getRedPoint(parser.roads);
+    cout << "Done" << endl;
   }
   else
     usage();
