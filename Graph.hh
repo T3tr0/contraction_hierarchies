@@ -16,6 +16,9 @@
 //   int Tail(int arc);
 //   int Head(int arc);
 //
+//   std::vector<t_coordinates> outgoingArcs;
+//   std::vector<t_coordinates> incomingArcs;
+//
 //   // Returns a list of all the arc indices whose Tail is "from".
 //   const vector& OutgoingArcs(int from) const;
 //

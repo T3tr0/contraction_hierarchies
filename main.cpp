@@ -5,10 +5,9 @@
 
 // "/Users/ro22e0/Desktop/test.csv"
 
-map<int, t_coordinates> getRedPoint(list<Road> roads) {
-  map<int, t_coordinates> redPointsList;
+map<pair<float, float>, int> getRedPoint(list<Road> roads) {
+  map<pair<float, float>, int> redPointsList;
   list<Road>::iterator it = roads.begin();
-  int i = 0;
 
   for(; it != roads.end(); ++it) {
     list<t_coordinates> coordinates = (*it).coord_points;
@@ -16,17 +15,18 @@ map<int, t_coordinates> getRedPoint(list<Road> roads) {
               {coordinates.front().lat, coordinates.front().lng};
     t_coordinates lastCoordinate =
               {coordinates.back().lat, coordinates.back().lng};
-    redPointsList.insert(pair<int, t_coordinates>(i, firstCoordinate));
-    i++;
-    redPointsList.insert(pair<int, t_coordinates>(i, lastCoordinate));
-    i++;
+    redPointsList.insert(pair<pair<float, float>, int>(pair<float, float>(
+      firstCoordinate.lat, firstCoordinate.lng), redPointsList.size()));
+    redPointsList.insert(pair<pair<float, float>, int>(pair<float, float>(
+      lastCoordinate.lat, lastCoordinate.lng), redPointsList.size()));
   }
 
-  map<int, t_coordinates>::const_iterator it2 = redPointsList.begin();
+  map<pair<float, float>, int>::const_iterator it2 = redPointsList.begin();
   for(; it2 != redPointsList.end(); ++it2) {
-    cout << it2->first << " || { "
-      << (it2->second).lat << " , " << (it2->second).lng << " }" <<endl;
+    cout << it2->second << " || { "
+      << (it2->first).first << " , " << (it2->first).second << " }" <<endl;
   }
+  cout << redPointsList.size() << endl;
   return redPointsList;
 }
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
   {
     CsvParser parser = CsvParser(argv[1]);
     parser.Parse();
-    // getRedPoint(parser.roads);
+    getRedPoint(parser.roads);
     cout << "Done" << endl;
   }
   else
