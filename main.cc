@@ -71,12 +71,57 @@ vector<arc> getArcs(map<coordinate, int> &nodes, vector<Road> &roads) {
         }
       }
   }
-      cout << num_arcs << endl;
   return arcs;
 }
 
 void usage() {
   cerr << "No file provided.\n[Usage ./server file_path.csv]" << endl;
+}
+
+coordinate getCoordinate(std::map<coordinate, int> nodes, int numberOfNode) {
+  for (auto node : nodes) {
+    if (node.second == numberOfNode) {
+      return node.first;
+    }
+  }
+  return coordinate(-1, -1);
+}
+
+bool checkCoordinateWithRoad(coordinate firstCoordinate, coordinate secondCoordinate, Road road) {
+  for (auto coordinateToFind : road.coord_points) {
+      if (firstCoordinate == coordinateToFind) {
+        for (auto secondCoordinateToFind : road.coord_points) {
+          if (secondCoordinate == secondCoordinateToFind) {
+            return true;
+          }
+        }
+      }
+  }
+  return false;
+}
+
+Road checkCoordinateWithRoads(coordinate firstCoordinate, coordinate secondCoordinate, std::vector<Road> roads) {
+  for (auto road : roads) {
+    if (checkCoordinateWithRoad(firstCoordinate, secondCoordinate, road)) {
+      return road;
+    }
+  }
+}
+
+std::vector<float> getDistance(std::vector<Road> roads, std::vector<arc> arcs, std::map<coordinate, int> nodes) {
+    std::vector<float> distances;
+
+    for (auto arc : arcs) {
+      int firstNode = arc.first;
+      int secondNode = arc.second;
+
+      coordinate firstCoordinate = getCoordinate(nodes, firstNode);
+      coordinate secondCoordinate = getCoordinate(nodes, secondNode);
+      Road road = checkCoordinateWithRoads(firstCoordinate, secondCoordinate, roads);
+      // Get the exact road that are between the first and the second coordinate
+      // Then get distance between one-to-one coordinate in a liste of double
+      // then calcule divide by the limit speed
+    }
 }
 
 int main(int argc, char *argv[]) {
