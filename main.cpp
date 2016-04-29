@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # include "CsvParser.hh"
 # include "Road.hh"
 # include <map>
@@ -59,11 +58,8 @@ map<pair<int, int>, int> getArcs(map<coordinate, int> &nodes, vector<Road> &road
 
     for (vector<Road>::iterator it_roads = roads.begin(); it_roads != roads.end(); ++it_roads) {
       vector<coordinate> points = (*it_roads).coord_points;
-      cout << "###" << endl;
-      cout << "NEW ROAD" << endl;
       for (vector<coordinate>::iterator it_points = points.begin(); it_points != points.end(); ++it_points) {
         res = nodes.find(*it_points);
-
         if (res != nodes.end()) {
           if (From == -1) {
             From = res->second;
@@ -71,16 +67,12 @@ map<pair<int, int>, int> getArcs(map<coordinate, int> &nodes, vector<Road> &road
             To = res->second;
             arcs.insert(make_pair(make_pair(From, To), index++));
 
-            if (not it_roads->oneway)
+            if (!(it_roads->oneway))
               arcs.insert(make_pair(make_pair(To, From), index++));
 
-            cout << "###" << endl;
-            for (map<pair<int, int>, int>::iterator it_arcs = arcs.begin(); it_arcs != arcs.end(); ++it_arcs) {
-              cout << "From " << it_arcs->first.first << " To " << it_arcs->first.second << endl;
-            }
-            cout << "nb of arcs = " << arcs.size() << endl;
-
-            From = To;
+            it_points--;
+            From = -1;
+            To = -1;
           }
         }
       }
@@ -100,7 +92,6 @@ int main(int argc, char *argv[]) {
   if (argv[1] != NULL) {
     CsvParser parser = CsvParser(argv[1]);
     parser.Parse();
-<<<<<<< HEAD
     nodes = getNodes(parser.roads);
     cout << nodes.size() << endl;
     arcs = getArcs(nodes, parser.roads);

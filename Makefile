@@ -6,7 +6,7 @@ SRC_EXE         =       main.cpp \
 
 OBJ_EXE         =       $(SRC_EXE:.cpp=.o)
 
-CXX             =        g++
+CXX             =        g++ -std=c++11
 
 all             :       $(NAME_EXE)
 
