@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # include "CsvParser.hh"
 # include "Road.hh"
 # include <map>
@@ -99,6 +100,7 @@ int main(int argc, char *argv[]) {
   if (argv[1] != NULL) {
     CsvParser parser = CsvParser(argv[1]);
     parser.Parse();
+<<<<<<< HEAD
     nodes = getNodes(parser.roads);
     cout << nodes.size() << endl;
     arcs = getArcs(nodes, parser.roads);
