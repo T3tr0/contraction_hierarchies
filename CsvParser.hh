@@ -2,8 +2,7 @@
 # define CSVPARSER_HH_
 
 # include <iostream>
-#include <vector>
-# include <list>
+# include <vector>
 # include "Road.hh"
 
 using namespace std;
@@ -11,7 +10,7 @@ using namespace std;
 class CsvParser {
 public:
   string path;
-  list<Road> roads;
+  vector<Road> roads;
 
   explicit CsvParser(string _path);
   CsvParser(CsvParser const &other);
@@ -24,5 +23,7 @@ public:
 private:
   vector<string> splitCsvLine(string s);
 };
+
+vector<coordinate> addPoints(vector<string> &data);
 
 #endif

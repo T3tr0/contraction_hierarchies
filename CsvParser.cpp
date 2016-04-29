@@ -1,8 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include "CsvParser.hh"
+# include <iostream>
+# include <fstream>
+# include <sstream>
+# include <vector>
+# include "CsvParser.hh"
 
 CsvParser::CsvParser(string _path) {
   path = _path;
@@ -28,27 +28,16 @@ void CsvParser::Parse() {
   string line;
   vector<string> v;
 
-  data.open(path);
+  data.open(path.c_str());
+
   if (data.is_open()) {
     while (getline(data, line)) {
       v = splitCsvLine(line);
 
-      list<t_coordinates> points;
-
-      vector<string>::iterator it = v.begin();
-      advance(it, 6);
-      for(; it != v.end(); ++it) {
-        float lat = stof(*it);
-        float lng = stof(*(++it));
-
-        t_coordinates coords = {lat, lng};
-        points.push_back(coords);
-      }
+      vector<coordinate> points = addPoints(v);
 
       Road road = Road(v[0], t_priority(stoi(v[1])), stoi(v[2]), stoi(v[3]), stoi(v[4]), stoi(v[5]), points);
       roads.push_back(road);
-
-      // cout << road << endl;
     }
 
   } else {
@@ -65,4 +54,18 @@ vector<string> CsvParser::splitCsvLine(string s) {
     v.push_back(str);
   }
   return v;
+}
+
+vector<coordinate> addPoints(vector<string> &data) {
+  vector<coordinate> points;
+
+  for(vector<string>::iterator it = data.begin() + 6; it != data.end(); ++it) {
+    float lat = stof(*it);
+    float lng = stof(*(++it));
+
+    coordinate coords = make_pair(lat, lng);
+    points.push_back(coords);
+  }
+
+  return points;
 }

@@ -33,14 +33,3 @@ double Distance(std::pair<double, double>coord1, std::pair<double, double>coord2
 
         return res * 1000;
 }
-
-
-int main()
-{
-        std::pair<double, double> coord1 = std::pair<double, double>(33, 1);
-        std::pair<double, double> coord2 = std::pair<double, double>(-45, -9);
-        double res = Distance(coord1, coord2);
-
-        std::cout << std::setprecision(9) << res << std::endl;
-        return 0;
-}

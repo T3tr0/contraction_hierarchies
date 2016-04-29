@@ -1,37 +1,90 @@
-#include "CsvParser.hh"
-#include "Road.hh"
-#include <map>
-#include <list>
+# include "CsvParser.hh"
+# include "Road.hh"
+# include <map>
+# include <list>
 
-// "/Users/ro22e0/Desktop/test.csv"
+map<coordinate, int> getNodes(vector<Road> &roads) {
 
-map<int, t_coordinates> getRedPoint(list<Road> roads) {
-  map<int, t_coordinates> redPointsList;
-  list<Road>::iterator it = roads.begin();
-  int i = 0;
+  map<coordinate, int> node_list;
+  int index = 0;
 
-  for(; it != roads.end(); ++it) {
-    list<t_coordinates> coordinates = (*it).coord_points;
-    t_coordinates firstCoordinate =
-              {coordinates.front().lat, coordinates.front().lng};
-    t_coordinates lastCoordinate =
-              {coordinates.back().lat, coordinates.back().lng};
-    redPointsList.insert(pair<int, t_coordinates>(i, firstCoordinate));
-    i++;
-    redPointsList.insert(pair<int, t_coordinates>(i, lastCoordinate));
-    i++;
+  vector<coordinate> all_coords;
+  map<coordinate, int> coords_reccurence;
+
+  for (vector<Road>::iterator it = roads.begin(); it != roads.end(); ++it) {
+
+    vector<coordinate> coordinates = (*it).coord_points;
+    all_coords.insert(all_coords.end(), coordinates.begin(), coordinates.end());
+
+    coordinate coord1 = make_pair(coordinates.front().first, coordinates.front().second);
+    coordinate coord2 = make_pair(coordinates.back().first, coordinates.back().second);
+
+    if (node_list.find(coord1) == node_list.end()) {
+      node_list.insert(make_pair(coord1, index++));
+    }
+
+    if (node_list.find(coord2) == node_list.end()) {
+      node_list.insert(make_pair(coord2, index++));
+    }
+
   }
 
-  map<int, t_coordinates>::const_iterator it2 = redPointsList.begin();
-  for(; it2 != redPointsList.end(); ++it2) {
-    cout << it2->first << " || { "
-      << (it2->second).lat << " , " << (it2->second).lng << " }" <<endl;
+  for (vector<coordinate>::iterator it = all_coords.begin(); it != all_coords.end(); ++it) {
+    pair<map<coordinate, int>::iterator, bool> res;
+
+    res = coords_reccurence.insert(make_pair(*it, 1));
+    if (!res.second)
+    (*(res.first)).second++;
   }
-  return redPointsList;
+
+  for (map<coordinate, int>::iterator it = coords_reccurence.begin(); it != coords_reccurence.end(); ++it) {
+    if (it->second > 1)
+    {
+      node_list.insert(make_pair(it->first, index++));
+    }
+  }
+  return node_list;
 }
 
-void getIntersection(list<Road> roads) {
+map<pair<int, int>, int> getArcs(map<coordinate, int> &nodes, vector<Road> &roads) {
 
+  map<pair<int, int>, int> arcs;
+
+  int To = -1;
+  int From = -1;
+  int index = 0;
+
+  map<coordinate, int>::iterator res;
+
+    for (vector<Road>::iterator it_roads = roads.begin(); it_roads != roads.end(); ++it_roads) {
+      vector<coordinate> points = (*it_roads).coord_points;
+      cout << "###" << endl;
+      cout << "NEW ROAD" << endl;
+      for (vector<coordinate>::iterator it_points = points.begin(); it_points != points.end(); ++it_points) {
+        res = nodes.find(*it_points);
+
+        if (res != nodes.end()) {
+          if (From == -1) {
+            From = res->second;
+          } else {
+            To = res->second;
+            arcs.insert(make_pair(make_pair(From, To), index++));
+
+            if (not it_roads->oneway)
+              arcs.insert(make_pair(make_pair(To, From), index++));
+
+            cout << "###" << endl;
+            for (map<pair<int, int>, int>::iterator it_arcs = arcs.begin(); it_arcs != arcs.end(); ++it_arcs) {
+              cout << "From " << it_arcs->first.first << " To " << it_arcs->first.second << endl;
+            }
+            cout << "nb of arcs = " << arcs.size() << endl;
+
+            From = To;
+          }
+        }
+      }
+  }
+  return arcs;
 }
 
 void usage() {
@@ -39,14 +92,20 @@ void usage() {
 }
 
 int main(int argc, char *argv[]) {
-  if (argv[1] != NULL)
-  {
+
+  map<coordinate, int> nodes;
+  map<pair<int, int>, int> arcs;
+
+  if (argv[1] != NULL) {
     CsvParser parser = CsvParser(argv[1]);
     parser.Parse();
-    // getRedPoint(parser.roads);
-    cout << "Done" << endl;
-  }
-  else
+    nodes = getNodes(parser.roads);
+    cout << nodes.size() << endl;
+    arcs = getArcs(nodes, parser.roads);
+    cout << arcs.size() << endl;
+  } else {
     usage();
+  }
+
   return (0);
 }

@@ -2,7 +2,7 @@
 # define  ROAD_HH_
 
 # include <iostream>
-# include <list>
+# include <vector>
 
 using namespace std;
 
@@ -16,26 +16,23 @@ typedef enum e_priority {
   PRIVATE
 } t_priority;
 
-typedef struct s_coordinates {
-  float lat;
-  float lng;
-} t_coordinates;
+typedef pair<float, float> coordinate;
 
 class Road {
 public:
-  string              name;
-  t_priority     priority;
-  int                 max_speed;
-  int                 num_lanes;
-  bool                oneway;
-  int                 numpoints;
-  list<t_coordinates> coord_points;
+  string name;
+  t_priority priority;
+  int max_speed;
+  int num_lanes;
+  bool oneway;
+  int numpoints;
+  vector<coordinate> coord_points;
 
-  explicit Road(string name, t_priority priority, int max_speed, int num_lanes, bool oneway, int numpoints, list<t_coordinates> coord_points);
+  Road(string name, t_priority priority, int max_speed, int num_lanes, bool oneway, int numpoints, vector<coordinate> coord_points);
   Road(Road const &other);
   ~Road();
 
-  Road	&operator=(Road const &other);
+  Road  &operator=(Road const &other);
 };
 
 ostream &operator<<(ostream &os, Road const &road);
