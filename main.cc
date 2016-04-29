@@ -1,5 +1,5 @@
-# include "CsvParser.hh"
-# include "Road.hh"
+# include "csvparser.h"
+# include "road.h"
 # include <map>
 # include <list>
 
@@ -55,6 +55,7 @@ vector<arc> getArcs(map<coordinate, int> &nodes, vector<Road> &roads) {
     for (vector<Road>::iterator it_roads = roads.begin(); it_roads != roads.end(); ++it_roads) {
 
       vector<coordinate> points = (*it_roads).coord_points;
+      int max_speed = (*it_roads).max_speed;
       int i = 0;
 
       while (i < (points.size() - 1)) {

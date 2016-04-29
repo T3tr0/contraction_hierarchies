@@ -2,7 +2,7 @@
 # include <fstream>
 # include <sstream>
 # include <vector>
-# include "CsvParser.hh"
+# include "csvparser.h"
 
 CsvParser::CsvParser(string _path) {
   path = _path;

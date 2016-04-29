@@ -1,9 +1,11 @@
-# include "Graph.hh"
+# include "graph.h"
 
 struct DijkstraState {
   int node;
-  double distance;
-  bool operator<(const DijkstraState& other) const;
+  double duration;
+  bool operator<(const DijkstraState& other) const {
+    return !(duration < other.duration);
+  }
 };
 
 class Dijkstra {

@@ -1,4 +1,4 @@
-#include "Road.hh"
+#include "road.h"
 
 Road::Road(string _name, enum e_priority _priority, int _max_speed, int _num_lanes, bool _oneway, int _numpoints, vector<coordinate> _coord_points)
 : name(_name),
