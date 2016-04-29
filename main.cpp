@@ -3,6 +3,8 @@
 # include <map>
 # include <list>
 
+typedef pair<int, int> arc;
+
 map<coordinate, int> getNodes(vector<Road> &roads) {
 
   map<coordinate, int> node_list;
@@ -46,37 +48,29 @@ map<coordinate, int> getNodes(vector<Road> &roads) {
   return node_list;
 }
 
-map<pair<int, int>, int> getArcs(map<coordinate, int> &nodes, vector<Road> &roads) {
+vector<arc> getArcs(map<coordinate, int> &nodes, vector<Road> &roads) {
 
-  map<pair<int, int>, int> arcs;
-
-  int To = -1;
-  int From = -1;
-  int index = 0;
-
-  map<coordinate, int>::iterator res;
+  vector<arc> arcs;
 
     for (vector<Road>::iterator it_roads = roads.begin(); it_roads != roads.end(); ++it_roads) {
+
       vector<coordinate> points = (*it_roads).coord_points;
-      for (vector<coordinate>::iterator it_points = points.begin(); it_points != points.end(); ++it_points) {
-        res = nodes.find(*it_points);
-        if (res != nodes.end()) {
-          if (From == -1) {
-            From = res->second;
-          } else {
-            To = res->second;
-            arcs.insert(make_pair(make_pair(From, To), index++));
+      int i = 0;
 
-            if (!(it_roads->oneway))
-              arcs.insert(make_pair(make_pair(To, From), index++));
-
-            it_points--;
-            From = -1;
-            To = -1;
-          }
+      while (i < (points.size() - 1)) {
+        int j = i + 1;
+        while (nodes.count(points[j]) == 0) j++;
+        i = j;
+        int index_node1 = nodes.find(points[i])->second;
+        int index_node2 =  nodes.find(points[j])->second;
+        arcs.push_back(make_pair(index_node1, index_node2));
+        if (!(*it_roads).oneway)
+        {
+          arcs.push_back(make_pair(index_node2, index_node1));
         }
       }
   }
+      cout << num_arcs << endl;
   return arcs;
 }
 
@@ -87,7 +81,7 @@ void usage() {
 int main(int argc, char *argv[]) {
 
   map<coordinate, int> nodes;
-  map<pair<int, int>, int> arcs;
+  vector<arc> arcs;
 
   if (argv[1] != NULL) {
     CsvParser parser = CsvParser(argv[1]);
