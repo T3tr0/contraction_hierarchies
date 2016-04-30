@@ -1,10 +1,13 @@
 NAME_EXE	=	server
 
-SRC_EXE         =       main.cpp \
-                        Road.cpp \
-												CsvParser.cpp
+SRC_EXE         =       main.cc \
+                        road.cc \
+												csvparser.cc \
+												distance.cc \
+												graph.cc
+												# dijkstra.cc \
 
-OBJ_EXE         =       $(SRC_EXE:.cpp=.o)
+OBJ_EXE         =       $(SRC_EXE:.cc=.o)
 
 CXX             =        g++ -std=c++11
 
