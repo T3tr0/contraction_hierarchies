@@ -3,7 +3,6 @@ NAME_EXE	=	server
 SRC_EXE         =       main.cc \
                         road.cc \
 												csvparser.cc \
-												distance.cc \
 												graph.cc
 												# dijkstra.cc \
 

@@ -1,9 +1,43 @@
 # include "csvparser.h"
 # include "road.h"
+# include <iostream>
+# include <cmath>
+# include <utility>
+# include <iomanip>
 # include <map>
 # include <list>
 
 typedef pair<int, int> arc;
+
+float hav(float dif) {
+        return (1 - cos(dif))/2;
+}
+
+float distance(std::pair<float, float>coord1, std::pair<float, float>coord2) {
+
+        float r = 6371.0088;
+        float pi = 3.14159265358979323846;
+
+        float lat1 = coord1.first * pi / 180;
+        float lng1 = coord1.second * pi / 180;
+
+        float lat2 = coord2.first * pi / 180;
+        float lng2 = coord2.second * pi / 180;
+
+        float difLat = lat2 - lat1;
+        float difLng = lng2 - lng1;
+
+        float res = 2 * r * asin(
+          sqrt(
+            hav(difLat)
+            + cos(lat1)
+            * cos(lat2)
+            * hav(difLng)
+          )
+        );
+
+        return res * 1000;
+}
 
 map<coordinate, int> getNodes(vector<Road> &roads) {
 
@@ -100,6 +134,21 @@ bool checkCoordinateWithRoad(coordinate firstCoordinate, coordinate secondCoordi
   return false;
 }
 
+float getDistance(coordinate firstCoordinate, coordinate secondCoordinate, Road road) {
+  float distanceRoReturn = 0;
+
+  std::vector<coordinate>::iterator it = road.coord_points.begin();
+  for (; it != road.coord_points.end(); ++it) {
+      if (firstCoordinate == (*it)) {
+        while ((*it) != secondCoordinate) {
+          distanceRoReturn += distance(*it, *(it));
+          ++it;
+        }
+      }
+  }
+  return distanceRoReturn;
+}
+
 Road checkCoordinateWithRoads(coordinate firstCoordinate, coordinate secondCoordinate, std::vector<Road> roads) {
   for (auto road : roads) {
     if (checkCoordinateWithRoad(firstCoordinate, secondCoordinate, road)) {
@@ -108,7 +157,7 @@ Road checkCoordinateWithRoads(coordinate firstCoordinate, coordinate secondCoord
   }
 }
 
-std::vector<float> getDistance(std::vector<Road> roads, std::vector<arc> arcs, std::map<coordinate, int> nodes) {
+std::vector<float> getDistances(std::vector<Road> roads, std::vector<arc> arcs, std::map<coordinate, int> nodes) {
     std::vector<float> distances;
 
     for (auto arc : arcs) {
@@ -118,10 +167,13 @@ std::vector<float> getDistance(std::vector<Road> roads, std::vector<arc> arcs, s
       coordinate firstCoordinate = getCoordinate(nodes, firstNode);
       coordinate secondCoordinate = getCoordinate(nodes, secondNode);
       Road road = checkCoordinateWithRoads(firstCoordinate, secondCoordinate, roads);
+      float distanceRoad = getDistance(firstCoordinate, secondCoordinate, road);
+      distances.push_back(distanceRoad);
       // Get the exact road that are between the first and the second coordinate
       // Then get distance between one-to-one coordinate in a liste of double
       // then calcule divide by the limit speed
     }
+    return distances;
 }
 
 int main(int argc, char *argv[]) {
