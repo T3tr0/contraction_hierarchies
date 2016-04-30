@@ -51,10 +51,8 @@ void Dijkstra::Run(int source) {
       }
     }
   }
-  cout << "###### ARC PATH #####" << endl;
-  cout << "node source: " << source << endl;
-  ArcPathFromSourceTo(5);
-  cout << endl;
+  // cout << "###### ARC PATH #####" << endl;
+  // cout << "node source: " << source << endl;
 }
 
 const vector<double>& Dijkstra::Distances() const {
@@ -69,14 +67,15 @@ vector<int> Dijkstra::ArcPathFromSourceTo(int node) const {
   vector<int> res;
   int arc = parent_arc_[node];
   int prev = node;
-  cout << prev << " -> " ;
+
   while (arc != -1) {
     prev = (prev == graph_.Tail(arc)) ? graph_.Head(arc) : graph_.Tail(arc);
     res.push_back(arc);
-    cout << prev << " -> " ;
     arc = parent_arc_[prev];
   }
-  cout << "ARRIVED" << endl;
+
+  reverse(res.begin(), res.end());
+
   return res;
 }
 

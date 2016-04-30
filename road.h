@@ -16,7 +16,7 @@ typedef enum e_priority {
   PRIVATE
 } t_priority;
 
-typedef pair<float, float> coordinate;
+typedef pair<double, double> coordinate;
 
 class Road {
 public:

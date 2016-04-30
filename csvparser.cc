@@ -60,8 +60,8 @@ vector<coordinate> addPoints(vector<string> &data) {
   vector<coordinate> points;
 
   for(vector<string>::iterator it = data.begin() + 6; it != data.end(); ++it) {
-    float lat = stof(*it);
-    float lng = stof(*(++it));
+    double lat = stod(*it);
+    double lng = stod(*(++it));
 
     coordinate coords = make_pair(lat, lng);
     points.push_back(coords);

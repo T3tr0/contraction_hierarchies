@@ -1,14 +1,14 @@
 NAME_EXE	=	server
 
-SRC_EXE         =       main.cc \
-                        road.cc \
-												csvparser.cc \
-												graph.cc
-												# dijkstra.cc \
+SRC_EXE         =       main.cc				\
+                        road.cc 			\
+												csvparser.cc 	\
+												graph.cc 			\
+												dijkstra.cc		\
 
 OBJ_EXE         =       $(SRC_EXE:.cc=.o)
 
-CXX             =        g++ -std=c++11
+CXX             =        g++ -std=c++11 -g3
 
 all             :       $(NAME_EXE)
 
