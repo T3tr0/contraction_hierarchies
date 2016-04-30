@@ -1,10 +1,17 @@
+# include <queue>
+# include <limits>
+# include <algorithm>
+# include <iostream>
 # include "graph.h"
+
+using std::vector;
+using std::priority_queue;
 
 struct DijkstraState {
   int node;
-  double duration;
+  double distance;
   bool operator<(const DijkstraState& other) const {
-    return !(duration < other.duration);
+    return !(distance < other.distance);
   }
 };
 
