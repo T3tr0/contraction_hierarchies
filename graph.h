@@ -3,9 +3,13 @@
 
 #include <string>
 #include <vector>
+#include <map>
+#include <utility>
 
 using std::vector;
 using std::string;
+using std::map;
+using std::pair;
 
 // In this graph, nodes are integers in 0..num_nodes-1, and arcs are also
 // integers in 0..num_arcs-1.
@@ -42,5 +46,13 @@ class Graph {
   vector<int> tail_;
   vector<int> head_;
 };
+
+struct RoadData {
+  Graph graph;
+  vector<double> arc_durations;
+  map<pair<double, double>, int> latlng_to_node;
+};
+
+RoadData ParseCsvFile(string filename);
 
 #endif  // GRAPH_H_

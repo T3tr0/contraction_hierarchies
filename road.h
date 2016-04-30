@@ -36,5 +36,5 @@ public:
 };
 
 ostream &operator<<(ostream &os, Road const &road);
-
+double calcDistance(std::pair<double, double>coord1, std::pair<double, double>coord2);
 #endif

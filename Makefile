@@ -1,10 +1,12 @@
 NAME_EXE	=	server
 
-SRC_EXE         =       main.cc				\
-                        road.cc 			\
-												csvparser.cc 	\
-												graph.cc 			\
+SRC_EXE         =       graph.cc 			\
+												parse_csv.cc	\
 												dijkstra.cc		\
+												main.cc				\
+												# csvparser.cc
+												# road.cc
+												# distance.cc
 
 OBJ_EXE         =       $(SRC_EXE:.cc=.o)
 
